@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Potato vs. Zombies — Vacances en danger</title>
+  <style>.cache{display:none !important}</style> <!-- sécurité si style.css ne se charge pas -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<noscript>Active JavaScript pour jouer.</noscript>
+
+<!-- ÉCRAN D'ACCUEIL -->
+<main id="menu" class="ecran">
+  <div class="logo" aria-hidden="true">🥔</div>
+  <h1>Potato vs. Zombies</h1>
+  <h2>Vacances en danger</h2>
+  <p>Les patates se dorent au soleil… jusqu'à l'arrivée des zombies. Protège le stock !</p>
+  <button id="b-jouer" class="gros">Jouer</button>
+  <button id="b-regles-menu" class="gros alt">Règles</button>
+</main>
+
+<!-- ÉCRAN DE PRÉPARATION : équipe et mode de jeu -->
+<main id="preparation" class="ecran cache">
+  <section class="panneau-preparation">
+    <p class="sur-titre">PRÉPARE TON ÉQUIPE</p>
+    <h1>Choisis tes patates</h1>
+    <p>Tu peux emporter <b>5 patates</b>. En mode Histoire, traverse cinq mondes et bats leurs boss.</p>
+    <div id="choix-plantes" class="grille-choix"></div>
+    <p id="compteur-selection" class="compteur-selection"></p>
+    <h2>Choisis un mode</h2>
+    <div class="modes">
+      <button id="mode-classique" class="carte-mode">
+        <b>🌻 Classique</b><small>7 vagues, sans fusion</small>
+      </button>
+      <button id="mode-histoire" class="carte-mode">
+        <b>📖 Histoire</b><small>5 mondes, 20 étapes et 5 boss</small>
+      </button>
+      <button id="mode-infini" class="carte-mode">
+        <b>♾️ Infini Fusion</b><small>Vagues sans fin, hybrides inédites, maximum 2 étoiles</small>
+      </button>
+    </div>
+    <button id="b-partie" class="gros" disabled>Défendre le jardin !</button>
+    <button id="b-retour-menu" class="gros alt">Retour</button>
+  </section>
+</main>
+
+<!-- ÉCRAN DE JEU -->
+<main id="jeu" class="ecran cache">
+  <header id="haut">
+    <div class="stat">☀ <b id="soleil">0</b></div>
+    <div class="stat">Vague <b id="vague">1</b>/<span id="nbv">7</span></div>
+    <div id="monde-info" class="stat cache">🌍 Monde <b id="monde-numero">1</b>/5 · <b id="monde-nom"></b> · Étape <b id="monde-etape">1</b>/4</div>
+    <div class="barre" title="Progression"><i id="progres"></i></div>
+    <button id="b-regles" title="Règles">Règles</button>
+    <button id="b-recommencer" title="Recommencer">Recommencer</button>
+    <button id="b-menu" title="Menu">Menu</button>
+  </header>
+  <div id="cartes"></div>
+  <div id="msg"></div>
+  <div id="plateau">
+    <div id="stock"></div>
+    <div id="champ">
+      <div id="cases"></div>   <!-- cases cliquables -->
+      <div id="couche"></div>  <!-- patates, zombies, tirs -->
+    </div>
+  </div>
+  <div id="bandeau"></div>
+</main>
+
+<!-- RÈGLES -->
+<div id="regles" class="voile cache"><div class="boite">
+  <h2>Règles du jeu</h2>
+  <p><b>But :</b> en mode Histoire, traverse les 5 mondes et bats un boss à la quatrième étape de chacun. En Classique, survis aux 7 vagues. En Infini Fusion, va le plus loin possible.</p>
+  <p><b>Préparation :</b> avant de jouer, choisis 5 patates parmi les 11 proposées et sélectionne un mode.</p>
+  <p><b>Jouer :</b> choisis une patate dans ta barre (clic ou touches 1 à 5), puis clique sur une case libre. Chaque patate coûte du soleil ☀.</p>
+  <p><b>Déplacer :</b> clique une patate déjà posée, puis une case vide. Le déplacement est gratuit. Les fusions ne sont possibles qu'en mode Infini Fusion.</p>
+  <ul>
+    <li><b>Patate solaire</b> (mécanique perso) : produit +20 ☀ toutes les 8,5 secondes.</li>
+    <li><b>Patate pétarade</b> : lance une bombe qui blesse plusieurs zombies proches dans sa ligne.</li>
+    <li><b>Patate givrée</b> : ralentit fortement le zombie touché pendant quelques secondes.</li>
+    <li><b>Patate boomerang</b> : son projectile traverse plusieurs zombies.</li>
+    <li><b>Patate soigneuse</b> : se soigne et répare la patate la plus blessée dans son rang ou un rang voisin.</li>
+    <li><b>Patate hérisson</b> : blesse les zombies qui la mordent.</li>
+    <li><b>Patate jumelle</b> : envoie deux projectiles par tir.</li>
+    <li><b>Patate électrique</b> : son éclair rebondit jusqu'à trois fois sur les zombies proches, même dans les rangs voisins.</li>
+    <li><b>Patate mineuse</b> : explose quand un zombie approche et blesse ceux autour.</li>
+    <li><b>Patate dorée</b> : bonus rare qui apparaît dans le jardin. Clique vite dessus : +100 ☀ !</li>
+    <li><b>Niveaux de difficulté</b> : à chaque vague, plus de zombies, plus résistants, plus rapides.</li>
+    <li><b>Mode Histoire</b> : explore cinq mondes de quatre étapes, avec monstres exclusifs et boss aux pouvoirs propres : Crabe blindé (armure), spectres (esquive), magma (brûlure), spores (soin des alliés), puis yétis (gel des patates).</li>
+    <li><b>Classique et Histoire</b> : les patates ne fusionnent pas, mais tu peux les déplacer en cliquant dessus puis sur une case vide.</li>
+    <li><b>Mode Infini Fusion</b> : fusionne des patates, même de types différents, pour créer des hybrides aux pouvoirs combinés. Les vagues sont infinies et les patates s'arrêtent à deux étoiles.</li>
+    <li><b>Cible à protéger</b> : les zombies foncent vers le stock 📦 à gauche.</li>
+  </ul>
+  <button id="b-fermer" class="gros">Compris !</button>
+</div></div>
+
+<!-- VICTOIRE / DÉFAITE -->
+<div id="fin" class="voile cache"><div class="boite">
+  <h2 id="fin-titre"></h2>
+  <p id="fin-texte"></p>
+  <button id="b-rejouer" class="gros">Rejouer</button>
+</div></div>
+
+<script src="script.js"></script>
+</body>
+</html>
